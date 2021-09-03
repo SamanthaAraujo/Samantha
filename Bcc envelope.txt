@@ -1,0 +1,53 @@
+#Modelo BCC orientado aos outputs - Modelo do envelope
+
+param n; # DMU
+param r; # Input
+param s; # Output
+param o; # DMU analisada
+
+set D:= 1..n;
+set I:= 1..r;
+set O:= 1..s;
+set A:= 1..o;
+
+param x{i in D, j in I};
+param y{i in D, j in O};
+
+var lamb{i in D},>=0;
+var h{i in A};
+
+maximize Effo: h[o];
+
+s.t. R1{j in O}: -h[o]*y[o,j] + sum{i in D} y[i,j]*lamb[i] >=0;
+
+s.t. R2{k in I}: x[o,k] - sum{i in D} x[i,k]*lamb[i] >=0;
+
+s.t. R3:sum{i in D} lamb[i] = 1;
+
+
+data;
+
+param n := 8;
+param r := 1;
+param s := 2;
+param o := 4;
+param y : 1   2  :=
+		1 103  14400
+		2 1375  2160
+		3 35  16704
+		4 34  12960
+		5 53  6480
+		6 165  1440
+		7 6  21600
+		8 4  8640;
+param x : 1   :=
+		1 13677317.88
+		2 756013745.70
+		3 793021.41
+		4 1103621.46
+		5 9604370.43
+		6 107216494.85
+		7 256586.48
+		8 74167.47 ;
+
+end;

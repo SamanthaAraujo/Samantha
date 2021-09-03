@@ -1,0 +1,65 @@
+#Modelo BCC orientado aos outputs
+
+param n; # DMU
+param r; # Input
+param s; # Output
+param o; # DMU analisada
+
+set D:= 1..n;
+set I:= 1..r;
+set O:= 1..s;
+
+param x{i in D, j in I};
+
+param y{i in D, j in O};
+
+
+var u{ j in O}, > 0.00000001 ;
+
+var v{ i in I}, >= 0.00000001 ;
+
+var z;
+
+minimize Effo: sum {i in I} v[i]*x[o,i] + z;
+
+s.t. R1: sum { j in O} u[j] * y[o,j] = 1;
+s.t. R2{k in D}: sum { j in O} u[j] * y[k,j] - sum { i in I} v[i] * x[k,i] - z <= 0;
+#s.t. R5: u[1]<=0.4;
+#s.t. R6: u[2]<=0.4;
+#s.t. R7: u[1]>=0.000000001;
+#s.t. R8: u[2]>=0.000000001;
+#s.t. R9: v[1]<=0.5;
+#s.t. R10: v[1]>=0.00000000001;
+#s.t. R5: (sum {j in O} u[j] * y[o,j]) * 0.3 <= u[1] * y[o,1];
+#s.t. R6: (sum {j in O} u[j] * y[o,j]) * 0.3 <= u[2] * y[o,2];
+#s.t. R7: u[1] * y[o,1] <= (sum {j in O} u[j] * y[o,j]) * 0.6;
+#s.t. R8: u[2] * y[o,2] <= (sum {j in O} u[j] * y[o,j]) * 0.6;
+#s.t. R9: v[1] * x[o,1] <= (sum {j in I} v[j] * x[o,j]) * 0.5;
+#s.t. R10: (sum {j in I} v[j] * x[o,j]) * 0.2 <= v[1] * x[o,1];
+
+data;
+
+param n := 8;
+param r := 1;
+param s := 2;
+param o := 2;
+param y : 1   2  :=
+		1 103  14400
+		2 500  2160
+		3 35  16704
+		4 34  12960
+		5 53  6480
+		6 165  1440
+		7 6  21600
+		8 4  8640;
+param x : 1  :=
+		1 13677317.88
+		2 7560137.45
+		3 793021.41
+		4 1103621.46
+		5 9604370.43
+		6 107216494.85
+		7 256586.48
+		8 74167.47 ;
+
+end;
